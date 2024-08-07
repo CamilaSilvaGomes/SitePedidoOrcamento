@@ -1,0 +1,34 @@
+@font-face { /*estilizando uma fonte externa*/
+	font-family: crazer-font; /* Define o nome da fonte para ser usado no CSS */
+	src: url(Crazer-mL13m.ttf); /* Especifica o caminho do arquivo da fonte a ser utilizado */
+}
+
+h1 {
+	font-family: crazer-font; /* Aplica a fonte definida em @font-face ao elemento h1 */
+	text-align: center; /* Alinha o texto ao centro do elemento */
+	margin-top: 0%; /* Define a margem superior como 0% do contêiner pai (o que pode ser incomum em uso, geralmente usa-se 'px' ou 'em') */
+}
+
+.cinza {
+	font-size: 12px; /* Define o tamanho da fonte como 12 pixels */
+	text-align: center; /* Alinha o texto ao centro do elemento */
+	color: #A9A9A9; /* Define a cor do texto como cinza claro (#A9A9A9) */
+}
+
+h1 {
+	text-align: center; /* Alinha o texto ao centro do elemento */
+	font-family: crazer-font; /* Aplica a fonte definida em @font-face ao elemento h1 */
+	padding-top: 80px; /* Adiciona um espaço interno de 80 pixels no topo do elemento */
+}
+
+.cinza {
+	text-align: center; /* Alinha o texto ao centro do elemento */
+	color: #A9A9A9; /* Define a cor do texto como cinza claro (#A9A9A9) */
+}
+
+
+
+
+
+
+

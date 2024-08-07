@@ -1,0 +1,293 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="contactos.css">    
+    <!-- Link fontawesome -->
+    <script src="https://kit.fontawesome.com/d132031da6.js" crossorigin= "anonymous"></script>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <!-- Google Maps -->
+    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA8Qn96p3CNQ0YEEXuurLG7PGPyLrUahy0&callback=inicializarMapa"></script>    
+    <script type="text/javascript">
+        var map; // Variável para armazenar o objeto do mapa
+        var destinoLatLng; // Variável para armazenar as coordenadas do destino
+        function inicializarMapa() {
+            // Cria um novo objeto Geocoder para converter o endereço em coordenadas geográficas
+            var geocoder = new google.maps.Geocoder();
+            var moradaDestino = "Av. da Liberdade 190, 1250-147 Lisboa, Portugal";
+
+            // Solicita a geocodificação do endereço fornecido
+            geocoder.geocode({ 'address': moradaDestino }, function (results, status) {
+                if (status == 'OK') {
+                    // Se a geocodificação for bem-sucedida, armazena as coordenadas do destino
+                    destinoLatLng = new google.maps.LatLng(results[0].geometry.location.lat(), results[0].geometry.location.lng());
+                    // Inicializa o mapa centrado nas coordenadas do destino
+                    map = new google.maps.Map(document.getElementById('mapa'), {
+                        center: destinoLatLng,
+                        zoom: 12
+                    });
+                    // Adiciona um marcador no destino
+                    var destinoMarker = new google.maps.Marker({
+                        position: destinoLatLng,
+                        map: map,
+                        title: 'Destino'
+                    });
+                } else {
+                    // Se a geocodificação falhar, exibe uma mensagem de erro
+                    alert('Geocodificação falhou devido a: ' + status);
+                }
+            });
+        }
+
+        function calcularRota(origemLatLng) {
+            // Cria um objeto DirectionsService para solicitar informações sobre a rota
+            var directionsService = new google.maps.DirectionsService();
+
+            // Criar um objeto DirectionsRenderer para exibir a rota no mapa
+            var directionsRenderer = new google.maps.DirectionsRenderer({
+                map: map
+            });
+
+            // Configura o pedido de rota com origem, destino e modo de viagem
+            var request = {
+                origin: origemLatLng,
+                destination: destinoLatLng,
+                travelMode: google.maps.TravelMode.DRIVING
+            };
+
+            // Enviar a solicitação de rota para o DirectionsService
+            directionsService.route(request, function (response, status) {
+                if (status == 'OK') {
+                    // Exibir a rota no mapa
+                    directionsRenderer.setDirections(response);
+                } else {
+                    alert('Falha ao calcular a rota devido a: ' + status);
+                }
+            });
+        }
+
+        function calcularRotaComOrigemUsuario() {
+            // Obtém o endereço de origem do campo de entrada
+            var origemEndereco = document.getElementById('origem').value;
+
+            // Cria um novo objeto Geocoder para converter o endereço em coordenadas geográficas
+            var geocoder = new google.maps.Geocoder();
+            geocoder.geocode({ 'address': origemEndereco }, function (results, status) {
+                if (status == 'OK') {
+                    var origemLatLng = new google.maps.LatLng(results[0].geometry.location.lat(), results[0].geometry.location.lng());
+                    calcularRota(origemLatLng);
+                } else {
+                    alert('Geocodificação da origem falhou devido a: ' + status);
+                }
+            });
+        }
+
+        function usarLocalizacaoUsuario() {
+            // Obter a localização do usuário
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(function (position) {
+                    // Armazena as coordenadas atuais do usuário
+                    var origemLatLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+                    calcularRota(origemLatLng);
+                }, function (error) {
+                    // Se falhar ao obter a localização, exibe uma mensagem de erro
+                    alert('Falha ao obter a localização do usuário: ' + error.message);
+                });
+            } else {
+                // Se o navegador não suportar geolocalização, exibe uma mensagem de erro
+                alert('Seu navegador não suporta a obtenção da localização do utilizador.');
+            }
+        }
+
+        // Chame a função de inicialização do mapa após o carregamento da página
+        document.addEventListener('DOMContentLoaded', function () {
+            inicializarMapa();
+        });
+    </script>
+  </head>
+  <body style="background-color: #f2f8fb;">
+    <!-- Menu de Navegação -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="#"></a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+              <a class="nav-link" aria-current="page" href="index.html">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="orcamento.html">Orçamento</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="portfolio.html">Portfolio</a>
+            </li>
+            <li class="nav-item dropdown">
+              <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                <li><a class="dropdown-item" href="discografia.html" target="_blank">Portfolio</a></li>
+              </ul>
+              <li class="nav-item">
+              <a class="nav-link" href="noticias.html">Notícias</a>
+            </li>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="contactos.html" tabindex="-1">Contactos</a>
+            </li>
+          </ul>
+          <form class="d-flex">
+            <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+            <button class="btn btn-secondary" type="submit"><a href="" title="Busca"><i class="fas fa-search" style="color: white;"></i></a></button>
+          </form>
+        </div>
+      </div>
+    </nav>
+    <header>      
+      <h1>CONTACTOS</h1>
+      <p class="cinza"><i>Entre em contacto conosco.</i></p>        
+    </header>
+      <!-- Div com Contactos -->
+      <div class="container" style="padding: 10px;">
+        <div class="row">
+          <div class="col" style="margin-right: 1px;">
+            <i class="fas fa-map-marker-alt">Lisboa, Portugal</i><br>     
+            <i class="fas fa-phone">+351 123 456 789</i><br>      
+            <i class="fas fa-envelope">E-mail: camilagomes@exemplo.com</i><br><br>
+            <form action="" method="POST" id="Formulario" name="" onsubmit="return validarFormulario()">
+                <div>
+                    <h6>Deixe seus dados que entraremos em contato:</h6>
+                <table>
+                    <tr>
+                        <td>
+                            <label for="nome"><h6>NOME:</h6></label>
+                        </td>
+                        <td>
+                            <input class="textbox" type="text" name="nome" maxlength="50" id="nome" size="40" placeholder="O seu nome" required>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label for="morada"><h6>MORADA:</h6></label>
+                        </td>
+                        <td>
+                            <input class="textbox" type="text" name="morada" maxlength="80" id="morada" size="40" placeholder="A sua morada" required>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label for="telemovel"><h6>TELEMÓVEL:</h6></label>
+                        </td>
+                        <td>
+                            <input class="textbox" type="text" name="telemovel" maxlength="9" id="telemovel" size="40" placeholder="O seu número de telemóvel"required>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label for="email"><h6>E-MAIL:</h6></label>
+                        </td>
+                        <td>
+                            <input class="textbox" type="text" name="email" maxlength="80" id="email" size="40" placeholder="O seu e-mail" required> 
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2"><br>
+                            <h6>Todos os campos são obrigatórios.</h6>
+                        </td>
+                    </tr>
+                </table>
+            </div>           
+            <br>
+            <div class="botoes">
+                <input class="btn btn-secondary" type="submit" name="Botao enviar" value="Enviar">
+                <input class="btn btn-secondary" type="reset" name="Botao apagar" value="Apagar" form="Formulario">
+            </div> 
+        </div>
+    </form>
+        <div class="col" style="margin-left: 1px;">
+            <label for="origem">Origem:</label><br>
+            <input type="text" id="origem" placeholder="Insira a origem">
+            <button type="button" class="btn btn-secondary" onclick="calcularRotaComOrigemUsuario()">Calcular Rota com Origem</button><br><br>
+            <div id="mapa" style="height: 400px; width:400px;"></div><br>
+            <button type="button" class="btn btn-secondary" onclick="usarLocalizacaoUsuario()">Usar Localização Atual</button><br><br>
+          </div>
+        </div>
+      </div>            
+    <!-- Footer -->
+    <footer class="bg-dark text-center text-white">
+      <!-- Grid container -->
+      <div class="container p-4 pb-0">
+      <!-- Section: Social media -->
+      <section class="mb-4">
+      <!-- Facebook -->
+      <a class="btn btn-outline-light btn-floating m-1" href="https://www.facebook.com/" role="button"><i class="fab fa-facebook-f"></i></a>
+      <!-- Twitter -->
+      <a class="btn btn-outline-light btn-floating m-1" href="https://twitter.com/" role="button"><i class="fab fa-twitter"></i></a>
+      <!-- Google -->
+      <a class="btn btn-outline-light btn-floating m-1" href="https://www.google.com/" role="button"><i class="fab fa-google"></i></a>
+      <!-- Instagram -->
+      <a class="btn btn-outline-light btn-floating m-1" href="https://www.instagram.com/" role="button"><i class="fab fa-instagram"></i></a>
+      <!-- Linkedin -->
+      <a class="btn btn-outline-light btn-floating m-1" href="https://www.linkedin.com/" role="button"><i class="fab fa-linkedin-in"></i></a>
+      <!-- Github -->
+      <a class="btn btn-outline-light btn-floating m-1" href="https://github.com/" role="button"><i class="fab fa-github"></i></a>
+      </section>
+      <!-- Section: Social media -->
+      </div>        
+      <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2);">
+      © 2024 Copyright: Camila Gomes
+      <a class="text-white" href="https://mdbootstrap.com/"></a>
+      </div>    
+    </footer>
+      <!-- Option 1: Bootstrap Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    <!-- Core theme JS-->    
+    <script type="text/javascript">        
+        // Formulário
+        var telemovelInput = document.getElementById('telemovel');
+        var emailInput = document.getElementById('email');
+
+        function validarFormulario() {
+        if (isNaN(telemovelInput.value)) {
+        alert('O número inserido não está correto.');
+        return false;
+        }
+
+        if (telemovelInput.value.length !== 9) {
+        alert("O número de telemóvel deverá conter 9 dígitos.");
+        return false;
+        }
+
+        if (!telemovelInput.value.startsWith('9')) {
+        alert("Telemóvel não começa com 9");
+        return false;
+        }
+
+        if (!validarEmail(emailInput.value)) {
+        return false;
+        }
+
+        alertaFinal();
+        return true;
+        }
+
+        function validarEmail(email) {
+        const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+        if (!re.test(String(email).toLowerCase())) {
+        alert("Email inválido");
+        return false;
+        }
+
+        return true;
+        }
+
+        function alertaFinal() {
+        alert("Obrigado pelo preenchimento do formulário. Todos os campos foram preenchidos corretamente.");
+        }
+    </script>
+  </body>
+</html>

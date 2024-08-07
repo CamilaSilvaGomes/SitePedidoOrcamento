@@ -1,0 +1,46 @@
+* {
+    margin: 0; /* Remove a margem padrão de todos os elementos */
+    padding: 0; /* Remove o preenchimento padrão de todos os elementos */
+    box-sizing: border-box; /* Inclui bordas e preenchimentos no cálculo da largura e altura do elemento */
+}
+
+.fas fa-search {
+    color: white; /* Define a cor do ícone como branco */
+}
+
+.dropdown-item {
+    background-color: black; /* Define a cor de fundo do item de dropdown como preto */
+    color: white; /* Define a cor do texto do item de dropdown como branco */
+}
+
+@font-face { /* Estilizando uma fonte externa */
+    font-family: crazer-font; /* Define o nome da fonte como 'crazer-font' */
+    src: url(Crazer-mL13m.ttf); /* Especifica o caminho da fonte externa */
+}
+
+.fontecustom {
+    font-family: crazer-font; /* Aplica a fonte 'crazer-font' ao elemento */
+    text-align: center; /* Alinha o texto ao centro */
+    margin-top: 50px; /* Define uma margem superior de 50 pixels */
+}
+
+p {
+    font-family: Verdana; /* Define a fonte dos parágrafos como Verdana */
+}
+
+#paragrafo-1 {
+    font-size: 12px; /* Define o tamanho da fonte como 12 pixels */
+    text-align: center; /* Alinha o texto ao centro */
+    color: #A9A9A9; /* Define a cor do texto como cinza claro */
+}
+
+#paragrafo-2 {
+    text-align: center; /* Alinha o texto ao centro */
+    margin-left: 200px; /* Define uma margem à esquerda de 200 pixels */
+    margin-right: 200px; /* Define uma margem à direita de 200 pixels */
+}
+
+.central {
+    text-align: center; /* Alinha o texto ao centro */
+    margin-top: 50px; /* Define uma margem superior de 50 pixels */
+}
